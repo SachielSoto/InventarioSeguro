@@ -1,0 +1,59 @@
+@using System.Text.Json
+@{
+    var nombres = ViewBag.Nombres as List<string>;
+    var cantidades = ViewBag.Cantidades as List<int>;
+}
+
+<div class="container mt-4">
+    <h2>📊 Dashboard de Inventario</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="inventarioChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Gráfico de barras
+    const ctxBar = document.getElementById('inventarioChart').getContext('2d');
+    new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(JsonSerializer.Serialize(nombres)),
+            datasets: [{
+                label: 'Cantidad de Productos',
+                data: @Html.Raw(JsonSerializer.Serialize(cantidades)),
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true }
+    });
+
+    // Gráfico de pastel
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: @Html.Raw(JsonSerializer.Serialize(nombres)),
+            datasets: [{
+                label: 'Distribución de Inventario',
+                data: @Html.Raw(JsonSerializer.Serialize(cantidades)),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ]
+            }]
+        },
+        options: { responsive: true }
+    });
+</script>

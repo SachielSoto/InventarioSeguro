@@ -1,0 +1,42 @@
+@model IEnumerable<InventarioSeguro.Models.Producto>
+
+<div class="container mt-4">
+    <h2 class="mb-3">Inventario</h2>
+    <a asp-action="Create" class="btn btn-success mb-3">➕ Agregar Producto</a>
+
+    <table class="table table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Fecha Registro</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td>@item.Cantidad</td>
+                    <td>@item.Precio.ToString("C")</td>
+                    <td>@item.FechaRegistro.ToShortDateString()</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">✏️ Editar</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">🗑️ Eliminar</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No hay productos registrados.</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
